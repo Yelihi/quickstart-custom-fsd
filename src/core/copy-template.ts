@@ -6,6 +6,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
+import { exists } from "./utils";
+
 const SKIP_DIRS = new Set([
   "node_modules",
   ".vscode",
@@ -20,19 +22,6 @@ const SKIP_DIRS = new Set([
   "cache",
 ]);
 
-/**
- * @description 파일 존재 여부 파악 함수
- * @param {string} path 파일 경로 
- * @returns 파일 존재 여부
- */
-export const exists = async (path : string) => {
-  try {
-    await fs.access(path);
-    return true;
-  }catch (error) {
-    return false;
-  }
-}
 
 /**
  * @description 빈 디렉토리 보장 함수 및 빈 디렉토리 생성 함수
@@ -41,7 +30,7 @@ export const exists = async (path : string) => {
 export const ensureEmptyDir = async (dir: string) => {
   if (await exists(dir)) {
     const entries = await fs.readdir(dir);
-    
+
     if (entries.length > 0) {
       throw new Error(`Directory ${dir} is not empty`);
     }
