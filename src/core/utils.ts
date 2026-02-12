@@ -35,3 +35,19 @@ export const renameGitignore = async (dir: string) => {
     }
 
 }
+
+/**
+ * @description package 의 이름을 변경합니다.
+ * @param {string} targetDir 대상 디렉토리
+ * @param {string} name 변경할 이름
+ */
+export const forcePackageName = async (targetDir: string, name: string) => {
+    const pkgPath = path.join(targetDir, "package.json");
+
+    if (await exists(pkgPath)) {
+        const pkg = JSON.parse(await fs.readFile(pkgPath, "utf-8"));
+
+        pkg.name = name;
+        await fs.writeFile(pkgPath, JSON.stringify(pkg, null, 2) + "\n", "utf8")
+    }
+}

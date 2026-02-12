@@ -6,7 +6,9 @@ import kleur from "kleur";
 
 import { ensureEmptyDir } from "../core/copy-template";
 import { copyDir } from "../core/copy-template";
-import { exists } from "../core/utils";
+import { applyTokenReplacement } from "../core/render";
+import { exists, forcePackageName, renameGitignore } from "../core/utils";
+import { getPackageManager, pmCommands } from "../core/pm";
 
 import { askUserChoices } from "../core/prompt";
 import { validateProjectName } from "../core/validate";
@@ -117,6 +119,34 @@ export const runCreate = async (params: {
             await mergePackageJsonFromOverlay({ projectDir: targetDir, overlayPackageJsonPath: overlayPkgPath })
         }
     }
+
+    /**
+     * 4. gitignore 이름 재 설정
+     * 5. 설정한 token (project name 이나 language 등등) 을 적용
+     * 6. package.json 이름 재 설정
+     */
+    await renameGitignore(targetDir);
+    await applyTokenReplacement(targetDir, {
+        "__PROJECT_NAME__": userChoices.projectName
+    });
+    await forcePackageName(targetDir, userChoices.projectName);
+
+
+    /**
+     * 최종 output
+     */
+    const packageManager = getPackageManager();
+    const { installCmd, installArgs, runCmd, runArgs } = pmCommands(packageManager);
+
+    console.log("");
+    console.log(kleur.green(`✔ Project created: ${targetDir}`));
+    console.log("");
+    console.log(`   cd ${userChoices.projectName}`);
+    console.log(`   ${installCmd} ${installArgs.join(" ")}`);
+    console.log(`   ${runCmd} ${runArgs.join(" ")} dev`);
+    console.log("");
+
+
 }
 
 
