@@ -15,6 +15,18 @@ export const exists = async (path: string) => {
     }
 }
 
+/**
+ * @description 입력 변수 정규화
+ * @param {string[]} argv 
+ */
+export const normalizeArgv = (argv: string[]) => {
+    // node, script 제외
+    const args = argv.slice(2);
+
+    // -- 만 있는 경우를 제외
+    return args.filter(arg => arg !== "--");
+}
+
 
 /**
  * @description gitignore 파일 이름을 .gitignore로 변경

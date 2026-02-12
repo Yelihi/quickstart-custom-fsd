@@ -9,16 +9,14 @@ import { copyDir } from "../core/copy-template";
 import { applyTokenReplacement } from "../core/render";
 import { exists, forcePackageName, renameGitignore } from "../core/utils";
 import { getPackageManager, pmCommands } from "../core/pm";
+import { output } from "../core/print";
 
 import { askUserChoices } from "../core/prompt";
 import { validateProjectName } from "../core/validate";
 
 // type
-import { Framework, TestTool } from "../interface";
+import { Framework, TestTool, Flags, OutputPrint } from "../interface";
 import { mergePackageJsonFromOverlay } from "../core/merge-package";
-
-
-type Flags = { install: boolean, nogit: boolean }
 
 
 /**
@@ -49,10 +47,7 @@ export const overlaysFor = (framework: Framework, opts: {
 }
 
 
-export const runCreate = async (params: {
-    flags: Flags,
-    args: string[]
-}) => {
+export const runCreate = async (params: { args: string[] }) => {
 
     // 사용자의 옵션 선택에 따른 options record 반환
     const userChoices = await askUserChoices();
@@ -138,13 +133,15 @@ export const runCreate = async (params: {
     const packageManager = getPackageManager();
     const { installCmd, installArgs, runCmd, runArgs } = pmCommands(packageManager);
 
-    console.log("");
-    console.log(kleur.green(`✔ Project created: ${targetDir}`));
-    console.log("");
-    console.log(`   cd ${userChoices.projectName}`);
-    console.log(`   ${installCmd} ${installArgs.join(" ")}`);
-    console.log(`   ${runCmd} ${runArgs.join(" ")} dev`);
-    console.log("");
+    const args: OutputPrint = {
+        projectName: userChoices.projectName,
+        pmInstall: installCmd,
+        pmInstallArgs: installArgs,
+        pmRun: runCmd,
+        pmRunArgs: runArgs
+    }
+
+    output(args);
 
 
 }
