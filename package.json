@@ -17,16 +17,23 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "tsup",
+    "test": "vitest",
+    "test:run": "vitest run",
     "prepublishOnly": "npm run typecheck && npm run build"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [],
-  "author": "",
+  "author": "yelihi",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^25.2.3",
     "@types/prompts": "^2.4.9",
+    "jsdom": "^28.0.0",
     "tsup": "^8.5.1",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
   },
   "dependencies": {
     "kleur": "^4.1.5",
