@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "skills": {
+    "clean-architecture": {
+      "source": "Yelihi/ai-skills",
+      "sourceType": "github",
+      "computedHash": "236593739207d4901b24878f3a4ce1b49b4eab2df527569f600605ab47d65607"
+    },
+    "commit-convention-reviewer": {
+      "source": "Yelihi/ai-skills",
+      "sourceType": "github",
+      "computedHash": "385cd4feeeb6fd1e937f9092a58185fbdbb2e5fc3ec89aa1b691ebc1b72b7fed"
+    },
+    "karpathy-guidelines": {
+      "source": "Yelihi/ai-skills",
+      "sourceType": "github",
+      "computedHash": "450fb989966b75c04a2621dacf704755911ccfec5190aff28728da99ea4dae57"
+    }
+  }
+}
