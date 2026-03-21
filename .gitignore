@@ -1,4 +1,5 @@
 node_modules
 dist
 .env
-.npmrc.claude/settings.local.json
+.npmrc
+.claude/settings.local.json
