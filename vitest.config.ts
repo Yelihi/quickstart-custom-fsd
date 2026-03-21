@@ -4,6 +4,7 @@ export default defineConfig({
     test: {
         environment: 'jsdom',
         globals: true,
-        setupFiles: [], // 필요한 경우 setup 파일을 추가할 수 있습니다.
+        setupFiles: [],
+        exclude: ["**/node_modules/**", "**/dist/**", "**/templates/**"],
     },
 });
