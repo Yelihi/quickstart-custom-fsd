@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/Yelihi/quickstart-custom-fsd/compare/v1.0.0...v1.1.0) (2026-03-21)
+
+
+### Features
+
+* **templates:** FSD 예시 코드 및 base-ts 환경 셋팅 추가 ([130a8ab](https://github.com/Yelihi/quickstart-custom-fsd/commit/130a8ab7072767676488d66ef5131c1670c95652))
+
 ## 1.0.0 (2026-03-21)
 
 
