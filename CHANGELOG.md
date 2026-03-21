@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/Yelihi/quickstart-custom-fsd/compare/v1.1.0...v1.1.1) (2026-03-21)
+
+
+### Bug Fixes
+
+* **ci:** release-please 워크플로우에 npm publish 통합 ([e0d0715](https://github.com/Yelihi/quickstart-custom-fsd/commit/e0d07159aac0136c7930994604a57ba5bd7710df))
+
 ## [1.1.0](https://github.com/Yelihi/quickstart-custom-fsd/compare/v1.0.0...v1.1.0) (2026-03-21)
 
 
