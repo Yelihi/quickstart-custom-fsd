@@ -56,7 +56,7 @@ export const ensureEmptyDir = async (dir: string) => {
  * @param from 원본 경로
  * @param to 목적지 경로
  */
-export const copyDir = async (from: string, to: string) => {
+export const copyDir = async (from: string, to: string, skipFiles?: Set<string>) => {
   // 사용자의 directory 내 폴더 생성
   await fs.mkdir(to, { recursive: true });
 
@@ -66,6 +66,7 @@ export const copyDir = async (from: string, to: string) => {
 
   for (const ent of entries) {
     if (SKIP_DIRS.has(ent.name)) continue;
+    if (skipFiles?.has(ent.name)) continue;
 
     // 원본 경로(src), 목적지 경로(dest) 조합
     // from = templates/react-vite, to = my-app, ent.name = src 라고 한다면
@@ -75,7 +76,7 @@ export const copyDir = async (from: string, to: string) => {
 
     if (ent.isDirectory()) {
       // 재귀 호출
-      await copyDir(src, dest);
+      await copyDir(src, dest, skipFiles);
       continue;
     }
 

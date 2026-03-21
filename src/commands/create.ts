@@ -64,14 +64,21 @@ export const runCreate = async (params: { args: string[] }) => {
     const targetDir = path.resolve(process.cwd(), userChoices.projectName)
 
     // dist에서 실행되도 templates 를 안정적으로 찾기 위해
-    // import.meta.url 은 현재 실행중 파일의 url (예: file://User/yelihi/project/src/command/create.ts)
+    // import.meta.url 은 현재 실행중 파일의 url (예: file://User/yelihi/project/dist/index.js)
     // fileURLToPath 는 url 을 파일 경로로 변경 (앞에 file:// 삭제)
     const __filename = fileURLToPath(import.meta.url);
-    // path.dirname 은 파일 경로에서 디렉토리 경로만 추출 (즉, create.ts 를 제거)
+    // path.dirname 은 파일 경로에서 디렉토리 경로만 추출
     const __dirname = path.dirname(__filename);
-    // 해당 파일이 실행되는 부분에서 2번 상위로 이동하여 templates 를 찾기 위함임
-    // project/templates
-    const templatesRoot = path.resolve(__dirname, "..", "..", "templates");
+    // tsup 빌드 시 dist/index.js 로 평탄화되므로 __dirname = dist/
+    // 개발 시 src/commands/create.ts 이므로 __dirname = src/commands/
+    // templates 폴더가 실제 존재하는 상위 경로를 탐색
+    const templatesRoot = await (async () => {
+        for (const rel of ["..", "../..", "../../.."]) {
+            const candidate = path.resolve(__dirname, rel, "templates");
+            if (await exists(candidate)) return candidate;
+        }
+        return path.resolve(__dirname, "..", "templates"); // fallback
+    })();
 
     // js, ts 에 따라 적용될 기본 템플릿의 경로
     // project/templates/react-vite/base-ts (예시)
@@ -105,7 +112,8 @@ export const runCreate = async (params: { args: string[] }) => {
 
         // 기존 baseDir 를 overlay 로 덮어씌어준다.
         // 여기서 전체 변경이 아니라 overlay 내 존재 파일들만 기존 base 에 덮어씌어주는것임
-        await copyDir(overlayDir, targetDir);
+        // package.json 은 copyDir 로 덮어쓰지 않고 mergePackageJsonFromOverlay 로 병합
+        await copyDir(overlayDir, targetDir, new Set(["package.json"]));
 
         // 마지막으로 package.json 을 합쳐준다
         const overlayPkgPath = path.join(overlayDir, "package.json");
