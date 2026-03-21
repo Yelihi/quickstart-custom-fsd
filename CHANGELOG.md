@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/Yelihi/quickstart-custom-fsd/compare/v1.1.2...v1.1.3) (2026-03-21)
+
+
+### Bug Fixes
+
+* **validate:** 프로젝트 이름 유효성 검사 조건 반전 수정 ([fc2106d](https://github.com/Yelihi/quickstart-custom-fsd/commit/fc2106d718cb698edb84c7197eed3b830fef6063))
+
 ## [1.1.2](https://github.com/Yelihi/quickstart-custom-fsd/compare/v1.1.1...v1.1.2) (2026-03-21)
 
 
