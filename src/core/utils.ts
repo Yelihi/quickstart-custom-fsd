@@ -53,6 +53,18 @@ export const renameGitignore = async (dir: string) => {
  * @param {string} targetDir 대상 디렉토리
  * @param {string} name 변경할 이름
  */
+/**
+ * @description templates 디렉토리 경로를 상위 디렉토리 탐색으로 찾아 반환
+ * @param {string} startDir 탐색 시작 경로 (보통 import.meta.url로 구한 __dirname)
+ */
+export const resolveTemplatesRoot = async (startDir: string): Promise<string> => {
+    for (const rel of ["..", "../..", "../../.."]) {
+        const candidate = path.resolve(startDir, rel, "templates");
+        if (await exists(candidate)) return candidate;
+    }
+    return path.resolve(startDir, "..", "templates"); // fallback
+}
+
 export const forcePackageName = async (targetDir: string, name: string) => {
     const pkgPath = path.join(targetDir, "package.json");
 

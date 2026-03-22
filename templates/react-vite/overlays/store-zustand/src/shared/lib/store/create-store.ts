@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create, type StateCreator } from "zustand";
 import { devtools } from "zustand/middleware";
 
 /**
@@ -24,7 +24,7 @@ import { devtools } from "zustand/middleware";
  */
 export function createStore<T>(
   name: string,
-  initializer: Parameters<typeof create<T>>[0]
+  initializer: StateCreator<T>
 ) {
-  return create<T>()(devtools(initializer as any, { name }));
+  return create<T>()(devtools(initializer, { name }));
 }

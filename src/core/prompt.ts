@@ -17,7 +17,7 @@ export type UserChoices = {
   husky: boolean;
 };
 
-function presetFor(framework: Framework): Omit<UserChoices, "projectName" | "framework"> {
+export function presetFor(framework: Framework): Omit<UserChoices, "projectName" | "framework"> {
   switch (framework) {
     case "next":
       return {

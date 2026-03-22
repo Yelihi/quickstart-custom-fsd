@@ -1,50 +1,21 @@
 // node
 import path from "node:path";
-import fs from "node:fs/promises"
 import { fileURLToPath } from "node:url";
 import kleur from "kleur";
 
-import { ensureEmptyDir } from "../core/copy-template";
-import { copyDir } from "../core/copy-template";
-import { applyTokenReplacement } from "../core/render";
-import { exists, forcePackageName, renameGitignore } from "../core/utils";
+import { resolveTemplatesRoot } from "../core/utils";
 import { getPackageManager, pmCommands } from "../core/pm";
 import { output } from "../core/print";
 
 import { askUserChoices } from "../core/prompt";
 import { validateProjectName } from "../core/validate";
+import { scaffold } from "../core/scaffold";
 
 // type
-import { Framework, TestTool, Flags, OutputPrint } from "../interface";
-import { mergePackageJsonFromOverlay } from "../core/merge-package";
+import { OutputPrint } from "../interface";
 
-
-/**
- * @description 선택된 overlays 에 따른 templates overlay list 반환
- * @param framework 
- * @param opts 
- * @returns 
- */
-export const overlaysFor = (framework: Framework, opts: {
-    tailwind: boolean,
-    store: boolean,
-    serverState: boolean,
-    test: TestTool,
-    husky: boolean,
-}): string[] => {
-    const list: string[] = [];
-
-    if (opts.tailwind) list.push("tailwind");
-    if (opts.store) {
-        if (framework === "vue-vite") list.push("store-pinia");
-        else list.push("store-zustand");
-    }
-    if (opts.serverState) list.push("tanstack-query");
-    if (opts.test !== "none") list.push(`test-${opts.test}`)
-    if (opts.husky) list.push("husky");
-
-    return list;
-}
+// overlaysFor를 re-export (기존 import 코드와의 호환성)
+export { overlaysFor } from "../core/scaffold";
 
 
 export const runCreate = async (params: { args: string[] }) => {
@@ -57,83 +28,18 @@ export const runCreate = async (params: { args: string[] }) => {
 
     if (!nameCheckResult.pass) {
         console.log(kleur.red(`✖ ${nameCheckResult.reason}`))
-        process.exit(1); // 프로세스 종료
+        process.exit(1);
     }
 
     // 프로젝트의 해당 루트를 설정 (절대경로/project)
     const targetDir = path.resolve(process.cwd(), userChoices.projectName)
 
     // dist에서 실행되도 templates 를 안정적으로 찾기 위해
-    // import.meta.url 은 현재 실행중 파일의 url (예: file://User/yelihi/project/dist/index.js)
-    // fileURLToPath 는 url 을 파일 경로로 변경 (앞에 file:// 삭제)
     const __filename = fileURLToPath(import.meta.url);
-    // path.dirname 은 파일 경로에서 디렉토리 경로만 추출
     const __dirname = path.dirname(__filename);
-    // tsup 빌드 시 dist/index.js 로 평탄화되므로 __dirname = dist/
-    // 개발 시 src/commands/create.ts 이므로 __dirname = src/commands/
-    // templates 폴더가 실제 존재하는 상위 경로를 탐색
-    const templatesRoot = await (async () => {
-        for (const rel of ["..", "../..", "../../.."]) {
-            const candidate = path.resolve(__dirname, rel, "templates");
-            if (await exists(candidate)) return candidate;
-        }
-        return path.resolve(__dirname, "..", "templates"); // fallback
-    })();
+    const templatesRoot = await resolveTemplatesRoot(__dirname);
 
-    // js, ts 에 따라 적용될 기본 템플릿의 경로
-    // project/templates/react-vite/base-ts (예시)
-    const baseDir = path.join(templatesRoot, userChoices.framework, `base-${userChoices.language}`)
-
-    // 기본 템플릿이 존재하지 않는다면 에러 출력 후 종료
-    if (!await exists(baseDir)) {
-        console.log(kleur.red(`✖ Base template not found: ${baseDir}`))
-        process.exit(1);
-    }
-
-    /**
-     * 1. 사용자가 설치하고자 하는 폴더가 빈 폴더인지 확인한다
-     * 2. 기본 템플릿을 복사하여 설정해준다
-     * 3. 추가 사용자의 옵션 선택에 따라 overlay 부분을 적용시킨다
-     */
-    await ensureEmptyDir(targetDir);
-    await copyDir(baseDir, targetDir);
-
-    const overlayNames = overlaysFor(userChoices.framework, userChoices)
-
-    for (const name of overlayNames) {
-        // project/templates/react-vite/overlays/tailwind (예시)
-        const overlayDir = path.join(templatesRoot, userChoices.framework, "overlays", name);
-
-        // overlays 설정은 선택이기에 존재하지 않는다면 건너뛰면 됩니다.
-        if (!await exists(overlayDir)) {
-            console.log(kleur.yellow(`⚠ Overlay not found (skipped): ${name}`))
-            continue;
-        }
-
-        // 기존 baseDir 를 overlay 로 덮어씌어준다.
-        // 여기서 전체 변경이 아니라 overlay 내 존재 파일들만 기존 base 에 덮어씌어주는것임
-        // package.json 은 copyDir 로 덮어쓰지 않고 mergePackageJsonFromOverlay 로 병합
-        await copyDir(overlayDir, targetDir, new Set(["package.json"]));
-
-        // 마지막으로 package.json 을 합쳐준다
-        const overlayPkgPath = path.join(overlayDir, "package.json");
-
-        if (await exists(overlayPkgPath)) {
-            await mergePackageJsonFromOverlay({ projectDir: targetDir, overlayPackageJsonPath: overlayPkgPath })
-        }
-    }
-
-    /**
-     * 4. gitignore 이름 재 설정
-     * 5. 설정한 token (project name 이나 language 등등) 을 적용
-     * 6. package.json 이름 재 설정
-     */
-    await renameGitignore(targetDir);
-    await applyTokenReplacement(targetDir, {
-        "__PROJECT_NAME__": userChoices.projectName
-    });
-    await forcePackageName(targetDir, userChoices.projectName);
-
+    await scaffold({ userChoices, targetDir, templatesRoot });
 
     /**
      * 최종 output
@@ -150,9 +56,4 @@ export const runCreate = async (params: { args: string[] }) => {
     }
 
     output(args);
-
-
 }
-
-
-

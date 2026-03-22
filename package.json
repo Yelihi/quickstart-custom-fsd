@@ -19,6 +19,8 @@
     "build": "tsup",
     "test": "vitest",
     "test:run": "vitest run",
+    "test:integration": "vitest run src/__tests__/scaffold.integration.test.ts",
+    "verify:e2e": "npx tsx scripts/verify-e2e.ts",
     "prepublishOnly": "npm run typecheck && npm run build"
   },
   "publishConfig": {
