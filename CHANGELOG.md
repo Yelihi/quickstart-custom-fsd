@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/Yelihi/quickstart-custom-fsd/compare/v1.1.3...v1.2.0) (2026-03-22)
+
+
+### Features
+
+* **scaffold:** scaffold 모듈 분리, E2E 파이프라인 추가 및 템플릿 버그 수정 ([5867a0a](https://github.com/Yelihi/quickstart-custom-fsd/commit/5867a0a2d1e3aec6668d2ac4bb8e749a0ef6ad49))
+
 ## [1.1.3](https://github.com/Yelihi/quickstart-custom-fsd/compare/v1.1.2...v1.1.3) (2026-03-21)
 
 
