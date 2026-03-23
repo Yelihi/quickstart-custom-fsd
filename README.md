@@ -10,27 +10,36 @@ npx quickstart-custom-plate
 
 ## 지원 프레임워크
 
-| 프레임워크 | 언어 |
-|-----------|------|
-| React + Vite | TypeScript / JavaScript |
+| 프레임워크           | 언어                    |
+| -------------------- | ----------------------- |
+| React + Vite         | TypeScript / JavaScript |
 | Next.js (App Router) | TypeScript / JavaScript |
-| Vue.js + Vite | TypeScript / JavaScript |
+| Vue.js + Vite        | TypeScript / JavaScript |
+
+## 기본 포함 설정 (항상 포함)
+
+| 설정                    | 내용                                                            |
+| ----------------------- | --------------------------------------------------------------- |
+| **ESLint 9**            | flat config, 프레임워크별 plugin (react-hooks, @next/next, vue) |
+| **Prettier**            | `.prettierrc` 공통 포맷 규칙 + `.prettierignore`                |
+| **lint/format scripts** | `lint`, `lint:fix`, `format`, `format:check`                    |
 
 ## 선택 가능한 옵션
 
-| 옵션 | 설명 |
-|------|------|
-| **Tailwind CSS v4** | `@tailwindcss/vite` 플러그인 방식 |
-| **Client State** | React/Next → Zustand v5, Vue → Pinia v3 |
-| **Server State** | TanStack Query v5 + `@lukemorales/query-key-factory` |
-| **Testing** | React/Vue+Vite → Vitest, Next.js → Jest |
-| **Git Hooks** | Husky v9 |
+| 옵션                | 설명                                                   |
+| ------------------- | ------------------------------------------------------ |
+| **Tailwind CSS v4** | `@tailwindcss/vite` 플러그인 방식                      |
+| **Client State**    | React/Next → Zustand v5, Vue → Pinia v3                |
+| **Server State**    | TanStack Query v5 + `@lukemorales/query-key-factory`   |
+| **Testing**         | React/Vue+Vite → Vitest, Next.js → Jest                |
+| **Storybook**       | Storybook 8.6, 프레임워크별 renderer + 예제 story 포함 |
+| **Git Hooks**       | Husky v9 + lint-staged (커밋 전 자동 lint/format)      |
 
 ## Preset vs Custom
 
 ```
 ? 추천 설정으로 진행할까요?
-  ❯ Preset (recommended)   - TypeScript + Tailwind + Store + TanStack Query + Test + Husky
+  ❯ Preset (recommended)   - TypeScript + Tailwind + Store + TanStack Query + Test + Storybook + Husky
     Custom                 - 옵션을 직접 선택
 ```
 
@@ -110,11 +119,24 @@ features/counter-store/
   ui/CounterWithStore.tsx
 ```
 
+### Storybook 선택 시 — 예제 story (`src/__stories__/`)
+
+```
+src/__stories__/                     # FSD 구조를 그대로 반영
+  features/
+    increment-counter/
+      ui/
+        IncrementCounterButton.stories.tsx  # Default, WithHighCount story
+```
+
+`.storybook/main.ts` — stories glob, addons 설정
+`.storybook/preview.ts` — 전역 CSS import, controls 설정
+
 ### TypeScript 전용 내장 라이브러리 (base-ts)
 
-| 라이브러리 | 용도 |
-|-----------|------|
-| `zod` | 스키마 검증 (form, request DTO) |
+| 라이브러리                      | 용도                                      |
+| ------------------------------- | ----------------------------------------- |
+| `zod`                           | 스키마 검증 (form, request DTO)           |
 | `tsyringe` + `reflect-metadata` | DI 컨테이너 (`@injectable`, `@singleton`) |
 
 ## 로컬 개발
