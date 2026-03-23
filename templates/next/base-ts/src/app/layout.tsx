@@ -10,11 +10,7 @@ export const metadata: Metadata = {
   description: "FSD(Feature-Sliced Design) 기반 Next.js 프로젝트",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
       <body>{children}</body>

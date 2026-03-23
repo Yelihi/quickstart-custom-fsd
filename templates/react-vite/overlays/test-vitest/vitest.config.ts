@@ -14,5 +14,5 @@ export default mergeConfig(
         exclude: ["node_modules/", "src/setup.test.ts"],
       },
     },
-  })
+  }),
 );

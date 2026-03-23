@@ -19,9 +19,6 @@ const handleIncrement = (id) => {
   <div class="flex flex-col items-center justify-center min-h-screen gap-4">
     <h1 class="text-4xl font-bold m-0">__PROJECT_NAME__</h1>
     <p class="text-base text-white/60 m-0">FSD(Feature-Sliced Design) 기반 프로젝트입니다.</p>
-    <IncrementCounterButton
-      :counter="counter"
-      @increment="handleIncrement"
-    />
+    <IncrementCounterButton :counter="counter" @increment="handleIncrement" />
   </div>
 </template>

@@ -15,6 +15,7 @@ export type UserChoices = {
   serverState: boolean;
   test: TestTool;
   husky: boolean;
+  storybook: boolean;
 };
 
 export function presetFor(framework: Framework): Omit<UserChoices, "projectName" | "framework"> {
@@ -27,6 +28,7 @@ export function presetFor(framework: Framework): Omit<UserChoices, "projectName"
         serverState: true,   // tanstack-query
         test: "jest",
         husky: true,
+        storybook: true,
       }
     case "vue-vite":
       return {
@@ -36,6 +38,7 @@ export function presetFor(framework: Framework): Omit<UserChoices, "projectName"
         serverState: true,   // tanstack-query
         test: "vitest",
         husky: true,
+        storybook: true,
       }
     case "react-vite":
       return {
@@ -45,6 +48,7 @@ export function presetFor(framework: Framework): Omit<UserChoices, "projectName"
         serverState: true,   // tanstack-query
         test: "vitest",
         husky: true,
+        storybook: true,
       }
     default:
       throw new Error(`Unsupported framework: ${framework}`);
@@ -172,6 +176,18 @@ export async function askUserChoices(): Promise<UserChoices> {
   const r8 = await prompts(
     {
       type: "toggle",
+      name: "storybook",
+      message: "8) Storybook 을 추가할까요?",
+      initial: true,
+      active: "yes",
+      inactive: "no",
+    },
+    { onCancel }
+  )
+
+  const r9 = await prompts(
+    {
+      type: "toggle",
       name: "husky",
       message: "8) Husky를 추가할까요?",
       initial: true,
@@ -189,6 +205,7 @@ export async function askUserChoices(): Promise<UserChoices> {
     store: !!r5.store,
     serverState: !!r6.serverState,
     test: r7.test as TestTool,
-    husky: !!r8.husky,
+    storybook: !!r8.storybook,
+    husky: !!r9.husky,
   };
 }

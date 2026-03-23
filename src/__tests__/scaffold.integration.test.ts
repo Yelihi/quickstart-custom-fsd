@@ -146,6 +146,7 @@ describe("scaffold integration", () => {
             serverState: false,
             test: "none",
             husky: false,
+            storybook: false,
         };
         const targetDir = await runScaffold(choices);
 

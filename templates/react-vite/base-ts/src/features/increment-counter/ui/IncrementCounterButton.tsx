@@ -5,10 +5,7 @@ interface IncrementCounterButtonProps {
   onIncrement: (id: string) => void;
 }
 
-export function IncrementCounterButton({
-  counter,
-  onIncrement,
-}: IncrementCounterButtonProps) {
+export function IncrementCounterButton({ counter, onIncrement }: IncrementCounterButtonProps) {
   return (
     <button
       onClick={() => onIncrement(counter.id)}
