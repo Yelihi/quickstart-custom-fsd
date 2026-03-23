@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.3.0](https://github.com/Yelihi/quickstart-custom-fsd/compare/v1.2.0...v1.3.0) (2026-03-23)
+
+
+### Features
+
+* storybook propts 추가 ([61d3285](https://github.com/Yelihi/quickstart-custom-fsd/commit/61d32854877cc18d9ea80388c9c03114dcef7e52))
+* **template:** ESLint 9 flat config + Prettier 기본 설정 추가 ([759e3a1](https://github.com/Yelihi/quickstart-custom-fsd/commit/759e3a136126b0b238539f39255377104a47cef1))
+* **template:** husky overlay에 lint-staged 연동 ([4078744](https://github.com/Yelihi/quickstart-custom-fsd/commit/4078744b7b328689c2eee3906e552d10425ac0fb))
+* **template:** storybook overlay + ESLint 9 + Prettier 기본 설정 추가 ([64fd974](https://github.com/Yelihi/quickstart-custom-fsd/commit/64fd974dfa11ec258e2d34902b1f4f05fa364dca))
+* **template:** storybook overlay 추가 (react-vite, next, vue-vite) ([c579aef](https://github.com/Yelihi/quickstart-custom-fsd/commit/c579aefee346e4fe92a653118845f2b684f029db))
+
+
+### Bug Fixes
+
+* **test:** integration test UserChoices에 storybook 필드 추가 ([661dc45](https://github.com/Yelihi/quickstart-custom-fsd/commit/661dc45ba4e16c21fdc0dfd90173ff160af65390))
+
 ## [1.2.0](https://github.com/Yelihi/quickstart-custom-fsd/compare/v1.1.3...v1.2.0) (2026-03-22)
 
 
