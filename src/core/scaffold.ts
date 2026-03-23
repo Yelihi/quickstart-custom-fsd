@@ -28,6 +28,7 @@ export const overlaysFor = (framework: Framework, opts: {
     serverState: boolean;
     test: TestTool;
     husky: boolean;
+    storybook: boolean;
 }): string[] => {
     const list: string[] = [];
 
@@ -39,7 +40,7 @@ export const overlaysFor = (framework: Framework, opts: {
     if (opts.serverState) list.push("tanstack-query");
     if (opts.test !== "none") list.push(`test-${opts.test}`);
     if (opts.husky) list.push("husky");
-
+    if (opts.storybook) list.push("storybook");
     return list;
 };
 
