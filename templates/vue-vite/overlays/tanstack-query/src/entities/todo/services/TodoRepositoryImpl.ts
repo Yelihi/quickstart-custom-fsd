@@ -1,9 +1,5 @@
 import { TodoStatus } from "../models/enums";
-import type {
-  CreateTodoRequestDto,
-  GetTodosParams,
-  TodoDto,
-} from "../models/dtos";
+import type { CreateTodoRequestDto, GetTodosParams, TodoDto } from "../models/dtos";
 import type { TodoRepository } from "../models/repository";
 
 // 예시: JSONPlaceholder API를 사용합니다.
@@ -21,7 +17,7 @@ class TodoRepositoryImpl implements TodoRepository {
     });
     if (!res.ok) throw new Error("Failed to fetch todos");
 
-    const data = await res.json() as Array<{ id: number; title: string; completed: boolean }>;
+    const data = (await res.json()) as Array<{ id: number; title: string; completed: boolean }>;
     return data.map((item) => ({
       ...item,
       status: item.completed ? TodoStatus.DONE : TodoStatus.TODO,
@@ -37,7 +33,7 @@ class TodoRepositoryImpl implements TodoRepository {
     });
     if (!res.ok) throw new Error("Failed to create todo");
 
-    const item = await res.json() as { id: number; title: string; completed: boolean };
+    const item = (await res.json()) as { id: number; title: string; completed: boolean };
     return { ...item, status: TodoStatus.TODO };
   }
 }

@@ -1,9 +1,5 @@
 import { TodoStatus } from "../models/enums";
-import type {
-  CreateTodoRequestDto,
-  GetTodosParams,
-  TodoDto,
-} from "../models/dtos";
+import type { CreateTodoRequestDto, GetTodosParams, TodoDto } from "../models/dtos";
 import type { TodoRepository } from "../models/repository";
 
 // 예시: JSONPlaceholder API를 사용합니다.
@@ -11,10 +7,7 @@ import type { TodoRepository } from "../models/repository";
 const BASE_URL = "https://jsonplaceholder.typicode.com";
 
 class TodoRepositoryImpl implements TodoRepository {
-  async getTodos(
-    params?: GetTodosParams,
-    options?: RequestInit
-  ): Promise<TodoDto[]> {
+  async getTodos(params?: GetTodosParams, options?: RequestInit): Promise<TodoDto[]> {
     const query = new URLSearchParams();
     if (params?.page) query.set("_page", String(params.page));
     if (params?.limit) query.set("_limit", String(params.limit));
@@ -25,17 +18,14 @@ class TodoRepositoryImpl implements TodoRepository {
     });
     if (!res.ok) throw new Error("Failed to fetch todos");
 
-    const data = await res.json() as Array<{ id: number; title: string; completed: boolean }>;
+    const data = (await res.json()) as Array<{ id: number; title: string; completed: boolean }>;
     return data.map((item) => ({
       ...item,
       status: item.completed ? TodoStatus.DONE : TodoStatus.TODO,
     }));
   }
 
-  async createTodo(
-    data: CreateTodoRequestDto,
-    options?: RequestInit
-  ): Promise<TodoDto> {
+  async createTodo(data: CreateTodoRequestDto, options?: RequestInit): Promise<TodoDto> {
     const res = await fetch(`${BASE_URL}/todos`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -45,7 +35,7 @@ class TodoRepositoryImpl implements TodoRepository {
     });
     if (!res.ok) throw new Error("Failed to create todo");
 
-    const item = await res.json() as { id: number; title: string; completed: boolean };
+    const item = (await res.json()) as { id: number; title: string; completed: boolean };
     return { ...item, status: TodoStatus.TODO };
   }
 }

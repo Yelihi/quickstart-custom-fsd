@@ -19,10 +19,7 @@ const handleIncrement = (id: string) => {
   <div class="home">
     <h1>__PROJECT_NAME__</h1>
     <p>FSD(Feature-Sliced Design) 기반 프로젝트입니다.</p>
-    <IncrementCounterButton
-      :counter="counter"
-      @increment="handleIncrement"
-    />
+    <IncrementCounterButton :counter="counter" @increment="handleIncrement" />
   </div>
 </template>
 
