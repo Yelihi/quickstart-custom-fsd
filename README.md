@@ -158,6 +158,28 @@ npm run test:run
 node dist/index.js
 ```
 
+## 알려진 이슈
+
+### Next.js + Jest 선택 시 npm install 경고
+
+Next.js 템플릿에서 Testing(Jest) 옵션을 선택한 경우, scaffold된 프로젝트에서 `npm install` 실행 시 아래와 같은 deprecated 경고가 출력됩니다.
+
+```
+npm warn deprecated inflight@1.0.6
+npm warn deprecated rimraf@3.0.2
+npm warn deprecated abab@2.0.6
+npm warn deprecated glob@7.2.3
+npm warn deprecated whatwg-encoding@2.0.0
+npm warn deprecated domexception@4.0.0
+```
+
+**원인**: `jest@29.x` 및 `jest-environment-jsdom@29.x`의 transitive dependency 문제입니다.
+
+- `jest-environment-jsdom` → `jsdom` → `abab`, `whatwg-encoding`, `domexception`
+- `jest` 내부 → `rimraf@3` → `glob@7` → `inflight`
+
+**영향**: 기능 동작에는 문제 없습니다. Jest 30.x 업그레이드 시 자연히 해소될 예정입니다.
+
 ## License
 
 ISC
