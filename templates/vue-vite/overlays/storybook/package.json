@@ -1,11 +1,20 @@
 {
   "scripts": {
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test:storybook": "vitest --config vitest.config.storybook.ts --run",
+    "test:storybook:watch": "vitest --config vitest.config.storybook.ts --watch"
   },
   "devDependencies": {
     "storybook": "^10.3.3",
     "@storybook/vue3-vite": "^10.3.3",
-    "@storybook/addon-mcp": "^0.4.2"
+    "@storybook/addon-mcp": "^0.4.2",
+    "@storybook/addon-vitest": "^10.3.3",
+    "@storybook/addon-a11y": "^10.3.3",
+    "vitest": "^4.0.0",
+    "@vitest/browser": "^4.0.0",
+    "@vitest/browser-playwright": "^4.0.0",
+    "@vitest/runner": "^4.0.0",
+    "playwright": "^1.52.0"
   }
 }
