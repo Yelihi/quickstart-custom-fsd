@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/Yelihi/quickstart-custom-fsd/compare/v1.3.0...v1.4.0) (2026-03-26)
+
+
+### Features
+
+* **template/storybook:** add addon-vitest integration to storybook overlay ([033af40](https://github.com/Yelihi/quickstart-custom-fsd/commit/033af400f0915a1adc39767242322f285b9476cf))
+
 ## [1.3.0](https://github.com/Yelihi/quickstart-custom-fsd/compare/v1.2.0...v1.3.0) (2026-03-23)
 
 
