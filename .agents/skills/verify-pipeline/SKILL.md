@@ -46,7 +46,7 @@ npm run test:integration
 - tailwind overlay 적용 시 CSS 내 `@import "tailwindcss"` 존재
 - Next.js tailwind 적용 시 HomeView가 CSS Module import 없이 className 사용
 
-### Step 4: E2E 검증 (scaffold + install + build)
+### Step 4: E2E 검증 (scaffold + install + build + storybook /mcp)
 
 ```bash
 npm run verify:e2e
@@ -57,7 +57,11 @@ npm run verify:e2e
 1. preset 설정으로 프로젝트 스캐폴딩
 2. `npm install` 실행
 3. `npm run build` 실행
-4. 에러 없이 완료되는지 확인
+4. storybook preset이 포함된 경우:
+   - `npm run storybook --ci --no-open` 기동
+   - Storybook ready 감지 후 `/mcp` 엔드포인트에 MCP initialize POST 요청
+   - 유효한 JSON-RPC 응답(`"jsonrpc"` + `"result"`) 확인
+5. 에러 없이 완료되는지 확인
 
 ### Step 5: 결과 리포트
 
@@ -65,6 +69,6 @@ npm run verify:e2e
 
 ## Notes
 
-- E2E 검증은 네트워크 상태에 따라 3-5분 소요됩니다
+- E2E 검증은 네트워크 상태에 따라 5-10분 소요됩니다 (storybook 기동 포함)
 - 템플릿 내용이 아닌 CLI 프롬프트/출력 포맷만 변경한 경우 Step 1-3만 실행해도 충분합니다
 - 테스트 중 생성되는 임시 프로젝트는 자동으로 정리됩니다

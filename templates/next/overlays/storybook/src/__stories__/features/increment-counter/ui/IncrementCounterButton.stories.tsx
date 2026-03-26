@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
 import { IncrementCounterButton } from "@/features/increment-counter";
 import { CounterStatus } from "@/entities/counter";
 
@@ -9,7 +8,7 @@ const meta = {
   tags: ["autodocs"],
   args: {
     counter: { id: "1", value: 0, status: CounterStatus.ACTIVE },
-    onIncrement: fn(),
+    onIncrement: () => {},
   },
 } satisfies Meta<typeof IncrementCounterButton>;
 
