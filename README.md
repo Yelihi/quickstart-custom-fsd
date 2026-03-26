@@ -26,14 +26,14 @@ npx quickstart-custom-plate
 
 ## 선택 가능한 옵션
 
-| 옵션                | 설명                                                   |
-| ------------------- | ------------------------------------------------------ |
-| **Tailwind CSS v4** | `@tailwindcss/vite` 플러그인 방식                      |
-| **Client State**    | React/Next → Zustand v5, Vue → Pinia v3                |
-| **Server State**    | TanStack Query v5 + `@lukemorales/query-key-factory`   |
-| **Testing**         | React/Vue+Vite → Vitest, Next.js → Jest                |
-| **Storybook**       | Storybook 8.6, 프레임워크별 renderer + 예제 story 포함 |
-| **Git Hooks**       | Husky v9 + lint-staged (커밋 전 자동 lint/format)      |
+| 옵션                | 설명                                                                               |
+| ------------------- | ---------------------------------------------------------------------------------- |
+| **Tailwind CSS v4** | `@tailwindcss/vite` 플러그인 방식                                                  |
+| **Client State**    | React/Next → Zustand v5, Vue → Pinia v3                                            |
+| **Server State**    | TanStack Query v5 + `@lukemorales/query-key-factory`                               |
+| **Testing**         | React/Vue+Vite → Vitest, Next.js → Jest                                            |
+| **Storybook**       | Storybook 10.3.3, 프레임워크별 renderer + 예제 story + `@storybook/addon-mcp` 포함 |
+| **Git Hooks**       | Husky v9 + lint-staged (커밋 전 자동 lint/format)                                  |
 
 ## Preset vs Custom
 
@@ -129,8 +129,22 @@ src/__stories__/                     # FSD 구조를 그대로 반영
         IncrementCounterButton.stories.tsx  # Default, WithHighCount story
 ```
 
-`.storybook/main.ts` — stories glob, addons 설정
+`.storybook/main.ts` — stories glob, `@storybook/addon-mcp` addon 설정
 `.storybook/preview.ts` — 전역 CSS import, controls 설정
+
+#### Storybook addon-mcp
+
+Storybook 기동(`npm run storybook`) 후 `/mcp` 엔드포인트가 활성화됩니다. Claude Code 등 MCP 클라이언트에서 아래와 같이 연결하면 컴포넌트 목록 조회, story preview 등의 도구를 사용할 수 있습니다.
+
+```json
+{
+  "mcpServers": {
+    "storybook": {
+      "url": "http://localhost:6006/mcp"
+    }
+  }
+}
+```
 
 ### TypeScript 전용 내장 라이브러리 (base-ts)
 
@@ -157,6 +171,17 @@ npm run test:run
 # 로컬 실행 (빌드 후)
 node dist/index.js
 ```
+
+## 변경 이력
+
+### Storybook 10.3.3 업그레이드 (feature/update-storybook)
+
+- **버전**: `storybook ^8.6.0` → `^10.3.3`
+- **Next.js 프레임워크**: `@storybook/nextjs` → `@storybook/nextjs-vite` (Vite 기반 마이그레이션)
+- **Addon 정리**: `addon-essentials`, `addon-interactions`는 v10 core에 통합되어 제거
+- **`@storybook/test` 제거**: v10에 호환 버전 없음 — story 파일의 `fn()` import를 `() => {}` no-op으로 교체
+- **`@storybook/addon-mcp ^0.4.2` 추가**: `/mcp` 엔드포인트 제공
+- **E2E 검증 강화**: `verify:e2e` 스크립트에 Storybook `/mcp` MCP initialize 응답 검증 추가
 
 ## 알려진 이슈
 
